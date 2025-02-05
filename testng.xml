@@ -8,6 +8,7 @@
         <classes>
             <class name="tests.HomePageTest"> </class>
             <class name="tests.HandleMultipleWindow"> </class>
+            <class name="tests.WebTableHeaderText"> </class>
         </classes>
     </test>
     <!--  Test  -->
