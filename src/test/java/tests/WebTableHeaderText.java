@@ -16,6 +16,7 @@ public class WebTableHeaderText extends Base {
         System.out.println("Header 2 is verified");
         Assert.assertEquals(pp.header3().getText(),"Price");
         System.out.println("Header 3 is verified");
+
     }
 
 }
