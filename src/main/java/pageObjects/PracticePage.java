@@ -1,5 +1,6 @@
 package pageObjects;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -7,10 +8,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import utility.Utilities;
 
 import java.time.Duration;
 
 public class PracticePage {
+    Utilities utility  = new Utilities();
     public WebDriver driver;
     public WebDriverWait wait;
     Actions actions;
@@ -38,16 +41,19 @@ public class PracticePage {
     @FindBy(id = "courses-iframe")
     WebElement ifrmaeExample;
 
-    @FindBy(xpath = "//a[@href='/']")
+    @FindBy(xpath = "(//a[@href='/'])[2]")
     WebElement homeMenu;
 
     @FindBy(xpath = "//a[@class='dropdown-toggle']")
-    WebElement moreMenu;
+    WebElement ScrollMoreMenu;
+
+    By moreMenu = By.xpath("//a[@class='dropdown-toggle']");
+
 
     @FindBy(xpath = "//a[@href='contact-us']")
     WebElement contactUs;
 
-    @FindBy(xpath = "//h4[text()='Address']/following-sibling::br/following-sibling::text()")
+    @FindBy(xpath = "(//h4[text()='Address'])[1]")
     WebElement address;
 
     public WebElement AboutUs(){
@@ -73,20 +79,27 @@ public class PracticePage {
     }
 
     //Click on the home menu
-    public void clickOnHome(){
-        homeMenu.click();
+    public WebElement clickOnHome(){
+        return homeMenu;
+    }
+    public WebElement getScrollMoreMenu(){
+        return ScrollMoreMenu;
     }
 
     //Hover to the more menu
-    public void hoverToMoreMenu(){
-        actions.moveToElement(moreMenu).perform();
+    public void clickOnMoreMenu(){
+        utility.waitAndClick(moreMenu);
     }
-    public void clickContact(){
-        wait.until(ExpectedConditions.elementToBeClickable(contactUs)).click();
+    public void scrollToMoreMenu(){
+        utility.scrollToElement(ScrollMoreMenu);
+    }
+    public WebElement clickContact(){
+        return contactUs;
+        //wait.until(ExpectedConditions.elementToBeClickable(contactUs)).click();
     }
 
-    public String getAddressText(){
-        return wait.until(ExpectedConditions.visibilityOf(address)).getText();
+    public WebElement getAddressText(){
+        return address;
     }
 
 
