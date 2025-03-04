@@ -20,5 +20,11 @@ public WebDriverWait wait = new WebDriverWait(Base.driver, Duration.ofSeconds(10
     public void scrollToElement(WebElement element){
         ((JavascriptExecutor) Base.driver).executeScript("arguments[0].scrollIntoView(true)", element);
     }
+    public void waitAndEnterValue(By locator,String inputValue){
+        WebElement element = wait.until(ExpectedConditions.presenceOfElementLocated(locator));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
+        element.clear();
+        element.sendKeys(inputValue);
+    }
 
 }
