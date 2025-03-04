@@ -1,6 +1,7 @@
 package pageObjects;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
@@ -20,7 +21,7 @@ public class PracticePage {
     public PracticePage(WebDriver driver){
         this.driver = driver;
         PageFactory.initElements(driver,this);
-        this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(120));
         this.actions = new Actions(driver);
     }
     @FindBy(xpath = "(//tr//th)[1]")
@@ -37,6 +38,9 @@ public class PracticePage {
 
     @FindBy(xpath = "//h2[contains(text(),'Welcome to QAClick Academy ')]")
     WebElement aboutUs;
+//----------------------------------------------
+    //fieldset/iframe[@id='courses-iframe']
+    //iframe[@id='courses-iframe']
 
     @FindBy(id = "courses-iframe")
     WebElement ifrmaeExample;
@@ -44,16 +48,16 @@ public class PracticePage {
     @FindBy(xpath = "(//a[@href='/'])[2]")
     WebElement homeMenu;
 
-    @FindBy(xpath = "//a[@class='dropdown-toggle']")
-    WebElement ScrollMoreMenu;
+    @FindBy(xpath = "(//a[@class='dropdown-toggle'])[1]")
+    WebElement moreMenu;
 
-    By moreMenu = By.xpath("//a[@class='dropdown-toggle']");
+    //By moreMenu = By.xpath("//a[@class='dropdown-toggle']");
 
 
-    @FindBy(xpath = "//a[@href='contact-us']")
+    @FindBy(xpath = "(//a[@href='contact-us'])[1]")
     WebElement contactUs;
 
-    @FindBy(xpath = "(//h4[text()='Address'])[1]")
+    @FindBy(xpath = "//li[h4[text()='Address']]/text()[1]")
     WebElement address;
 
     public WebElement AboutUs(){
@@ -82,24 +86,27 @@ public class PracticePage {
     public WebElement clickOnHome(){
         return homeMenu;
     }
-    public WebElement getScrollMoreMenu(){
-        return ScrollMoreMenu;
+    public void getScrollMoreMenu(){
+        try {
+            //Scroll into more menu
+            ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", moreMenu);
+            wait.until(ExpectedConditions.visibilityOf(moreMenu));
+            //perform actions
+            actions.moveToElement(moreMenu).perform();
+        } catch (Exception e){
+            System.out.println("Error hovering over more menu: " + e.getMessage());
+        }
     }
 
     //Hover to the more menu
-    public void clickOnMoreMenu(){
-        utility.waitAndClick(moreMenu);
-    }
-    public void scrollToMoreMenu(){
-        utility.scrollToElement(ScrollMoreMenu);
-    }
-    public WebElement clickContact(){
-        return contactUs;
+
+    public void clickContact(){
+        wait.until(ExpectedConditions.elementToBeClickable(contactUs));
         //wait.until(ExpectedConditions.elementToBeClickable(contactUs)).click();
     }
 
-    public WebElement getAddressText(){
-        return address;
+    public String getAddressText(){
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(address))).getText();
     }
 
 
